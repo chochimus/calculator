@@ -1,5 +1,7 @@
 const display = document.getElementById('display-id');
 const input = document.querySelectorAll('button');
+const decimalButton = document.querySelector('decimal');
+
 
 input.forEach((button) => {
   button.addEventListener('click', getInput);
@@ -10,6 +12,7 @@ let leftSet = false;
 let rightSide = [];
 let rightSet = false;
 let answerInMem = false;
+let decimalSet= false;
 let op = '';
 
 function getInput(event){
@@ -36,13 +39,13 @@ function handleInput(current){
         handleBackSpace();
       } 
       else if(current === '='){
-        setDisplay(leftSide.join(''));
+        setDisplay(`${Math.round(leftSide.join('')*10000)/10000}`);
         return;
       } 
       else {
         leftSet = true;
         op = current;
-        setDisplay(leftSide.join('').concat(op));
+        setDisplay(`${Math.round(leftSide.join('')*10000)/10000}${op}`);
       }
     }
   } else if(answerInMem){
@@ -50,19 +53,19 @@ function handleInput(current){
       leftSide = [];
       leftSet = false;
       leftSide.push(current);
-      setDisplay(leftSide.join(''));
+      setDisplay(`${Math.round(leftSide.join('')*10000)/10000}`);
     } else {
       if(current === '←'){
         handleBackSpace();
       } 
       else if(current === '='){
-        setDisplay(leftSide.join(''));
+        setDisplay(`${Math.round(leftSide.join('')*10000)/10000}`);
         leftSet = false;
         return;
       } 
       else {
         op = current;
-        setDisplay(leftSide.join('').concat(op));
+        setDisplay(`${Math.round(leftSide.join('')*10000)/10000}${op}`);
       }
     }
   }
@@ -70,19 +73,19 @@ function handleInput(current){
     if(!isNaN(Number(current))){
       rightSide.push(current);
       rightSet = true;
-      setDisplay(leftSide.join('').concat(op).concat(rightSide.join('')));
+      setDisplay(`${Math.round(leftSide.join('')*10000)/10000}${op}${Math.round(rightSide.join('')*10000)/10000}`);
     } 
     else {
       if(rightSide.length === 0){
         if(current === '←'){
           handleBackSpace();
         } else if(current === '='){
-          setDisplay(leftSide.join(''));
+          setDisplay(`${Math.round(leftSide.join('')*10000)/10000}`);
           leftSet = false; 
         }
         else {
           op = current;
-          setDisplay(leftSide.join('').concat(op));
+          setDisplay(`${Math.round(leftSide.join('')*10000)/10000}${op}`);
         }
       } 
       else {
@@ -105,7 +108,7 @@ function handleOperation(num1String, num2String, current){
     switch(op){
       case '+':
         answer = num1 + num2;
-        setDisplay(`${answer}`);
+        setDisplay(`${Math.round(answer*10000)/10000}`);
         leftSide = [answer];
         rightSide =[];
         rightSet = false;
@@ -113,7 +116,7 @@ function handleOperation(num1String, num2String, current){
         return;
       case '-':
         answer = num1 - num2;
-        setDisplay(`${answer}`);
+        setDisplay(`${Math.round(answer*10000)/10000}`);
         leftSide = [answer];
         rightSide =[];
         rightSet = false;
@@ -121,7 +124,7 @@ function handleOperation(num1String, num2String, current){
         return;
       case '*':
         answer = num1 * num2;
-        setDisplay(`${answer}`);
+        setDisplay(`${Math.round(answer*10000)/10000}`);
         leftSide = [answer];
         rightSide =[];
         rightSet = false;
@@ -133,7 +136,7 @@ function handleOperation(num1String, num2String, current){
         } 
         else{
           answer = (num1 / num2);
-          setDisplay(`${answer}`);
+          setDisplay(`${Math.round(answer*10000)/10000}`);
           leftSide = [answer];
           rightSide =[];
           rightSet = false;
@@ -145,7 +148,7 @@ function handleOperation(num1String, num2String, current){
     switch(op){
       case '+':
         answer = num1 + num2;
-        setDisplay(`${answer}${current}`);
+        setDisplay(`${Math.round(answer*10000)/10000}${current}`);
         leftSide = [answer];
         rightSide =[];
         op = current;
@@ -153,7 +156,7 @@ function handleOperation(num1String, num2String, current){
         return;
       case '-':
         answer = num1 - num2;
-        setDisplay(`${answer}${current}`);
+        setDisplay(`${Math.round(answer*10000)/10000}${current}`);
         leftSide = [answer];
         rightSide =[];
         op = current;
@@ -161,7 +164,7 @@ function handleOperation(num1String, num2String, current){
         return;
       case '*':
         answer = num1 * num2;
-        setDisplay(`${answer}${current}`);
+        setDisplay(`${Math.round(answer*10000)/10000}${current}`);
         leftSide = [answer];
         rightSide =[];
         op = current;
@@ -172,7 +175,7 @@ function handleOperation(num1String, num2String, current){
         divideByZero();
         } else{
           answer = num1 / num2;
-          setDisplay(`${answer}${current}`);
+          setDisplay(`${Math.round(answer*10000)/10000}${current}`);
           leftSide = [answer];
           rightSide =[];
           op = current;
@@ -204,7 +207,7 @@ function handleBackSpace(){
     } 
     else {
     leftSide.pop();
-    setDisplay(leftSide.join(''));
+    setDisplay(`${Math.round(leftSide.join('')*10000)/10000}`);
     return;
     }
   } 
@@ -212,7 +215,7 @@ function handleBackSpace(){
     if(op.length === 1){
       op = '';
       leftSet = false;
-      setDisplay(leftSide.join(''));
+      setDisplay(`${Math.round(leftSide.join('')*10000)/10000}`);
       return;
     }
     else {
@@ -229,7 +232,7 @@ function handleBackSpace(){
     else if(rightSide.length === 1){
       rightSide = [];
       rightSet = false;
-      setDisplay(leftSide.join('').concat(op));
+      setDisplay(`${Math.round(leftSide.join('')*10000)/10000}${op}`);
       return;
     } else {
       rightSide.pop();
